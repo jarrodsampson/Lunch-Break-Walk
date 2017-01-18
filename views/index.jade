@@ -1,0 +1,125 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    title Walking App
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    link(rel='shortcut icon', type='image/png', href='http://www.hansonish.com/extras/logos/walk-man-hanson.png')
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    link(rel='stylesheet', href='//cdn.jsdelivr.net/foundation/6.2.3/foundation.min.css')
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/motion-ui/1.1.1/motion-ui.min.css')
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css')
+    link(rel='stylesheet', href='/stylesheets/ngToast.min.css')
+    link(rel='stylesheet', href='/stylesheets/ngToast-animations.min.css')
+    link(rel='stylesheet', href='/stylesheets/main.css')
+    style.
+      .is-stuck {background:rgba(0,0,0,0.2); transition: background-color 1s ease; width:100%;padding:5px;border-bottom-right-radius:5px;border-bottom-left-radius:5px;}
+  body(data-ng-app='WalkApp', ng-controller='WalkController', ng-cloak='')
+    .wrapper.column.row
+      // basic textbox bind
+      .column.row
+        h3
+          | Lunch-Walk App&nbsp;
+          small {{message}}
+      // progress bar for steps
+      .column.row
+        .progress(ng-class="{'success': completedBar}", role='progressbar', tabindex='0', aria-valuenow='{{dirPercentage}}', aria-valuemin='0', aria-valuetext='{{dirPercentageMessage}}', aria-valuemax='100')
+          span.progress-meter(ng-style='barWidth')
+            p.progress-meter-text {{dirPercentageMessage}}
+      .column.row
+        .column.row
+          #grab(data-sticky-container='')
+            .primary.button-group.sticky(data-sticky='', data-top-anchor='grab', data-margin-top='0')
+              p
+                span.info.label Directions:
+              button.button(data-ng-repeat='x in walkLabels', ng-animate="'animate'", ng-disabled='disableDirectionButtons', ng-click='add(x)')
+                | {{ x.label }}
+      .column.row.spacer
+      .small-12.medium-3.large-3.columns
+        .small-12.medium-12.large-12.columns
+          button.button(ng-class="completedBar ? 'success' : 'hollow'", data-open='checkRouteModal', ng-disabled='walkArray.length<10', ng-click='checkWalk(walkArray)')
+            i.fi-check
+            |  Check Walk
+          button.hollow.button(ng-disabled='walkArray.length==0', data-open='clearModal')
+            i.fi-refresh
+            |  Clear
+        .fade.events.small-12.medium-12.large-12.columns(ng-if='walkArray.length>0')
+          p
+            span.secondary.label Instructions:
+          .item(data-ng-repeat='x in writtenDirections')
+            p
+              i.fi-arrow-left(ng-if="x.direction == 'West'")
+              i.fi-arrow-right(ng-if="x.direction == 'East'")
+              i.fi-arrow-up(ng-if="x.direction == 'North'")
+              i.fi-arrow-down(ng-if="x.direction == 'South'")
+              |  {{x.syn}} {{ x.direction }} on {{x.street}}.
+            p
+          button.button(ng-class="completedBar ? 'success' : 'hollow'", data-open='directionsModal', ng-disabled='walkArray.length<10')
+            i.fi-search
+            |  Get Directions
+      // This is the clear modal
+      #clearModal.reveal(data-reveal='', data-close-on-click='false', data-animation-in='fade-in', data-animation-out='fade-out')
+        h1 Clear Data?
+        p.lead Are you sure you would like to erase all directions?
+        a.button(ng-click='clearWalk()', data-close='') Clear Data
+        a.button(data-close='') Cancel
+        button.close-button(data-close='', aria-label='Close reveal', type='button')
+          span(aria-hidden='true') ×
+      // This is the checkRoute modal
+      #checkRouteModal.reveal(data-reveal='', data-close-on-click='true', data-animation-in='fade-in', data-animation-out='fade-out')
+        center
+          p(ng-hide='unsuccessful')
+            i.fi-check.checker
+          p(ng-hide='successful')
+            i.fi-x.er
+          p.lead {{message}}
+          a.button(data-close='') Okay
+        button.close-button(data-close='', aria-label='Close reveal', type='button')
+          span(aria-hidden='true') ×
+      // This is the Directions modal
+      #directionsModal.reveal(data-reveal='', data-close-on-click='true', data-animation-in='fade-in', data-animation-out='fade-out')
+        p.lead Directions
+        .fade.events.small-12.medium-12.large-12.columns(ng-if='walkArray.length>0')
+          .item(data-ng-repeat='x in writtenDirections')
+            p
+              i.fi-arrow-left(ng-if="x.direction == 'West'")
+              i.fi-arrow-right(ng-if="x.direction == 'East'")
+              i.fi-arrow-up(ng-if="x.direction == 'North'")
+              i.fi-arrow-down(ng-if="x.direction == 'South'")
+              |  {{x.syn}} {{ x.direction }} on {{x.street}}.
+            p
+        a.button(data-close='') Okay
+        button.close-button(data-close='', aria-label='Close reveal', type='button')
+          span(aria-hidden='true') ×
+      .small-12.medium-9.large-9.columns
+        .small-12.medium-12.large-12.columns(id='')
+          .column.row
+            table.hover
+              thead
+                tr
+                  th Step:
+                  th Direction:
+                  th Action:
+              tbody
+                tr.item(data-ng-repeat='x in walkArray')
+                  td {{$index + 1}}
+                  td {{ x.label }}
+                  td
+                    i.fi-trash(ng-click='remove($index)', title='Remove {{x.label}} Direction?')
+                tr(ng-if='walkArray.length<=0')
+                  td No Directions Added.
+        #grabend
+      toast
+    // jQuery (necessary for Bootstrap's JavaScript plugins)
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+    // Compiled and minified JavaScript
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-sanitize.min.js')
+    script(src='/js/ngToast.min.js')
+    script(src='//cdn.jsdelivr.net/foundation/6.2.3/foundation.min.js')
+    script(src='/js/app.js')
+    script.
+      $(document).foundation();
+

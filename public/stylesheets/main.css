@@ -1,0 +1,141 @@
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+
+body {
+    padding-top:1em;
+}
+
+.wrapper {
+    max-width:1200px;
+    width:100%;
+}
+
+.progress-meter-text {
+    padding-left:30px;
+}
+
+.button {
+    margin: 0.4em;
+}
+
+@media(min-width: 1200px) {
+    .ng-toast.ng-toast--right .ng-toast__list {
+        left: auto;
+        right: 15%;
+    }
+}
+
+
+.fi-trash {
+    font-size:22pt;
+    color:grey;
+    cursor:hand;
+    cursor:pointer;
+}
+
+.checker {
+    font-size:72pt;
+    color:green;
+}
+
+.er {
+    font-size:72pt;
+    color:red;
+}
+
+.fi-trash:hover {
+    color:black;
+}
+
+.spacer {
+    width:100%;
+    height:20px;
+}
+
+
+/* fade in fade out animation */
+.item.ng-move,
+.item.ng-enter,
+.item.ng-leave {
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+}
+
+.item.ng-leave.ng-leave-active,
+.item.ng-move,
+.item.ng-enter {
+    opacity:0;
+}
+
+.item.ng-leave,
+.item.ng-move.ng-move-active,
+.item.ng-enter.ng-enter-active {
+    opacity:1;
+}
+
+
+
+.events {
+    transition: all linear 0.5s;
+    opacity: 1;
+}
+
+.fade.ng-hide {
+    opacity: 0;
+    overflow:hidden;
+}
+/* slide in right animation */
+/*
+.events {
+    transition: all linear 0.5s;
+    opacity: 1;
+    margin-left:0px;
+}
+
+.fade.ng-hide {
+    opacity: 0;
+    margin-left:500px;
+    overflow:hidden;
+}
+/* slide in left animation */
+/*
+.events {
+    transition: all linear 0.5s;
+    opacity: 1;
+    margin-right:0px;
+}
+
+.fade.ng-hide {
+    opacity: 0;
+    margin-right:800px;
+    overflow:hidden;
+}
+/* slide in up animation */
+/*
+.events {
+    transition: all linear 0.5s;
+    opacity: 1;
+    margin-top:0px;
+}
+
+.fade.ng-hide {
+    opacity: 0;
+    margin-top:800px;
+    overflow:hidden;
+}
+/* slide in down animation */
+/*
+.events {
+    transition: all linear 0.5s;
+    opacity: 1;
+    margin-top:0px;
+}
+
+.fade.ng-hide {
+    opacity: 0;
+    margin-top:-800px;
+    overflow:hidden;
+}
+
+
